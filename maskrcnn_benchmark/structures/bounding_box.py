@@ -294,9 +294,9 @@ if __name__ == "__main__":
     #print(t_bbox.bbox)
 
     if t_bbox.has_field('masks'):
-        print(f"There are masks {t_bbox.has_field('mask')}")
+        print("There are masks {t_bbox.has_field('mask')}")
     else:
-        print(f"There are no masks {t_bbox.has_field('mask')}")
+        print("There are no masks {t_bbox.has_field('mask')}")
 
     print(bbox.max_length())
     #print(bbox.max_image_size())

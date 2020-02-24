@@ -62,25 +62,25 @@ def freeze_bn_params(m):
 def conv3x3(in_channels, out_channels, module_name, postfix, stride=1, groups=1, kernel_size=3, padding=1):
     """3x3 convolution with padding"""
     return [
-        (f'{module_name}_{postfix}/conv',
+        ('{}_{}/conv'.format(module_name, postfix),
          nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, groups=groups, bias=False)),
-        (f'{module_name}_{postfix}/norm',
+        ('{}_{}/norm'.format(module_name, postfix),
             group_norm(out_channels) if _GN else FrozenBatchNorm2d(out_channels)
         ),
-        (f'{module_name}_{postfix}/relu', nn.ReLU(inplace=True))
+        ('{}_{}/relu'.format(module_name, postfix), nn.ReLU(inplace=True))
     ]
 
 
 def conv1x1(in_channels, out_channels, module_name, postfix, stride=1, groups=1, kernel_size=1, padding=0):
     """1x1 convolution with padding"""
     return [
-        (f'{module_name}_{postfix}/conv',
+        ('{}_{}/conv'.format(module_name, postfix),
          nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, groups=groups,
                    bias=False)),
-        (f'{module_name}_{postfix}/norm',
+        ('{}_{}/norm'.format(module_name, postfix),
             group_norm(out_channels) if _GN else FrozenBatchNorm2d(out_channels)
         ),
-        (f'{module_name}_{postfix}/relu', nn.ReLU(inplace=True))
+        ('{}_{}/relu'.format(module_name, postfix), nn.ReLU(inplace=True))
     ]
 
 class Hsigmoid(nn.Module):
@@ -173,7 +173,7 @@ class _OSA_stage(nn.Sequential):
 
         if block_per_stage !=1:
             SE = False
-        module_name = f'OSA{stage_num}_1'
+        module_name = 'OSA{}_1'.format(stage_num)
         self.add_module(module_name, _OSA_module(in_ch, 
                                                  stage_ch, 
                                                  concat_ch, 
@@ -183,7 +183,7 @@ class _OSA_stage(nn.Sequential):
         for i in range(block_per_stage - 1):
             if i != block_per_stage -2: #last block
                 SE = False
-            module_name = f'OSA{stage_num}_{i + 2}'
+            module_name = 'OSA{}_{}'.format(stage_num, str(i+1))
             self.add_module(module_name,
                             _OSA_module(concat_ch, 
                                         stage_ch, 

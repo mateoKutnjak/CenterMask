@@ -147,11 +147,11 @@ def main():
             img = cv2.imread(imglist[i])
             assert img is not None
             im_name, _ = os.path.splitext(os.path.basename(imglist[i]))
-            print(f"{im_name} processing...")
+            print("{} processing...".format(im_name))
             start_time = time.time()
             composite = coco_demo.run_on_opencv_image(img)
             print("{}\tinference time: {:.2f}s".format(im_name, time.time() - start_time))
-            save_path = os.path.join(args.output_dir, f'{im_name}_result.jpg')
+            save_path = os.path.join(args.output_dir, '{im_name}_result.jpg'.format(im_name))
             cv2.imwrite(save_path, composite)
 
         else:
